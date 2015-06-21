@@ -1,5 +1,5 @@
 #!/bin/sh
 #CentOS 7.1 Network Fix for OpenVZ
-rpm -iUvh --force "https://github.com/Tsume/Scripts/raw/master/centos7/fix/network/initscripts-9.49.17-1.el7.x86_64.rpm"
+sed -i.bak "264s/.*/\/sbin\/arping -q -c 2 -w \$\{ARPING_WAIT:-3\} -D -I \$\{parent_device\} \$\{IPADDR\}\nif [ $? = 1 ]; then/g" "/etc/sysconfig/network-scripts/ifup-aliases"
 service network restart
 echo "Complete"
