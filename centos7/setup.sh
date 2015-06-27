@@ -28,7 +28,7 @@ echo "Changing ssh port to $SSH_PORT"
 sed -i.bak "s/#Port 22/Port $SSH_PORT/g" "/etc/ssh/sshd_config"
 
 echo "Disabling password logins..."
-echo "PasswordAuthentication no" >> "/etc/ssh/sshd_config"
+sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/g" "/etc/ssh/sshd_config"
 
 echo "Restarting ssh..."
 service sshd restart
