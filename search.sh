@@ -1,12 +1,15 @@
 #!/bin/bash
-IP_ADDRESS=$1
+if [[ "$1" != "" ]]; then
 
-if [ -z "$1" ]
-  then
-    echo "No argument supplied"
-  else
+    IP_ADDRESS="$1"
+	
     cd /tmp
     vzlist -o hostname,ctid,ip >> vzlist
     grep "$IP_ADDRESS" vzlist
+	
+else
+
+    echo "No argument supplied"
+	
 fi
 
