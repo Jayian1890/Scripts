@@ -39,13 +39,13 @@ return
  Send Y
  Send {Enter}
  Sleep, 1000
- Send eth0
+ Send eth1
  Send {Enter}
  Sleep, 1000
- Send 192.241.97.178
+ Send 138.128.21.226
  Send {Enter}
  Sleep, 1000
- Send 192.241.97.177
+ Send 138.128.21.225
  Send {Enter}
  Sleep, 1000
  Send 255.255.255.248
