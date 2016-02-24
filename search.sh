@@ -5,7 +5,7 @@ if [[ "$1" != "" ]]; then
 	
     cd /tmp
     vzlist -o hostname,ctid,ip >> vzlist
-    grep "$IP_ADDRESS" vzlist
+    grep "$IP_ADDRESS" 'vzlist -a'
 	
 else
 

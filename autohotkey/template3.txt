@@ -1,0 +1,5 @@
+NETWORKING="yes"
+GATEWAY="%gateway%"
+GATEWAYDEV="%device%"
+HOSTNAME="buf"
+FORWARD_IPV4="yes"

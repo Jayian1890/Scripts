@@ -1,0 +1,43 @@
+Dear Oleg Pamfilov,
+
+We are pleased to inform you that your service has been 
+provisioned. 
+
+Please read the following email carefully and print it for your 
+records.
+
+### Service Details
+=============================
+Label: %label%
+
+Main IP: %ipAddress%
+Administrator Username: root
+Administrator Password: %password%
+
+For Linux systems you can access your server using a free SSH 
+client called Putty which is available for free download at: 
+http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+
+For Windows system you can connect to your server using 
+Windows Remote Desktop Protocol, visit START then RUN (or 
+Search Programs and Files) type: mstsc and hit enter. 
+
+### Support
+=============================
+We pride ourselves with providing industry leading customer 
+service through our Support Fleet which is available to you 24 
+hours per day, 7 days per week. If you require assistance with your 
+service at anytime please login to the Surge control panel located 
+at https://surge.servermania.com and submit a support ticket. If 
+you are having difficulty logging in you may send an email to 
+support@servermania.com for assistance. Please include any 
+necessary information so that you may assist us in providing a 
+faster resolution to your case.
+
+=============================
+We appreciate your business,
+
+--
+Server Mania
+Phone: 1-716-745-4678
+support@servermania.com
