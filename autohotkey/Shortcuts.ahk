@@ -5,7 +5,59 @@
 return
 
 !2::
-  SendRaw b2netpass`%123
+ Send root
+ Send {Enter}
+ Sleep, 1500
+ SendRaw 12345!
+ Send {Enter}
+ Sleep, 1500
+
+ If InputBox(mainIP, "Main IP Address")
+	Return
+	
+ If InputBox(gateway, "Gateway IP Address")
+	Return
+	
+Send mii-tool eth1 && mii-tool eth0 {Enter}
+Sleep, 1500
+	
+ If InputBox(device, "Network Device Name")
+	Return
+	
+ Send rm -f /etc/network/interfaces.bak {Enter}
+ Sleep, 1500
+ Send mv /etc/network/interfaces /etc/network/interfaces.bak {Enter}
+ Sleep, 1500
+ 
+ Send vi /etc/network/interfaces {Enter}
+ Sleep, 1500
+ 
+ Send a
+ Send auto lo {Enter}
+ Send iface lo inet loopback {Enter}
+ Send {Enter}
+ Send allow-hotplug %device% {Enter}
+ Send iface %device% inet static {Enter}
+ Send {Tab} address %mainIP% {Enter}
+ Send {Tab} netmask 255.255.255.248 {Enter}
+ Send {Tab} gateway %gateway% {Enter}
+ Send {Tab} dns-nameservers 8.8.8.8 4.2.2.2 {Enter}
+ Send {Esc} :wq {Enter}
+ Sleep, 1500
+ 
+ Send passwd
+ Send {Enter}
+ Sleep, 1500
+ Random("password","12")
+ SendRaw %password%
+ Send {Enter}
+ Sleep, 1500
+ SendRaw %password%
+ Send {Enter}
+ Sleep, 1500
+ 
+ Clipboard:= password
+ Send ifdown %device%;ifup %device% && ping -c 5 google.com {Enter}
 return
   
 !3::
@@ -61,10 +113,10 @@ return
 !8::
  Send root
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  SendRaw sm12345!
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
 
  If InputBox(mainIP, "Main IP Address")
 	Return
@@ -73,34 +125,34 @@ return
 	Return
 	
 Send mii-tool eth1 && mii-tool eth0 {Enter}
-Sleep, 1000
+Sleep, 1500
 	
  If InputBox(device, "Network Device Name")
 	Return
 	
  Send rm -f /etc/sysconfig/network-scripts/ifcfg-%device%.bak {Enter}
  Send mv /etc/sysconfig/network-scripts/ifcfg-%device% /etc/sysconfig/network-scripts/ifcfg-%device%.bak {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Send vi /etc/sysconfig/network-scripts/ifcfg-%device% {Enter}
- Sleep, 1000
-
- TF_Replace("template2.txt","%ipaddr%",mainIP)
- TF_ReplaceInLines("!template2_copy.txt","1","","%device%",device)
- TF_ReplaceInLines("!template2_copy.txt","6","","%gateway%",gateway)
- TF("template2_copy.txt", "Result")
- Result:=TF_ReadLines(Result,0)
- ;MsgBox % Result
+ Sleep, 1500
  
  Send a
- Send %Result%
+ Send DEVICE=%device% {Enter}
+ Send TYPE=Ethernet {Enter}
+ Send ONBOOT=yes {Enter}
+ Send BOOTPROTO=static {Enter}
+ Send IPADDR=%mainIP% {Enter}
+ Send GATEWAY=%gateway% {Enter}
+ Send NETMASK=255.255.255.248 {Enter}
  Send {Esc} :wq {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Send rm -f /etc/sysconfig/network.bak {Enter}
  Send mv /etc/sysconfig/network /etc/sysconfig/network.bak {Enter}
  Send vi /etc/sysconfig/network {Enter}
- Sleep, 1000
+ Sleep, 1500
+ 
  Send a
  Send NETWORKING="yes" {Enter}
  Send GATEWAY="%gateway%" {Enter}
@@ -108,27 +160,28 @@ Sleep, 1000
  Send HOSTNAME="buf" {Enter}
  Send FORWARD_IPV4="yes"
  Send {Esc} :wq {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Send rm -f /etc/resolv.conf.bak {Enter}
  Send mv /etc/resolv.conf /etc/resolv.conf.bak {Enter}
  Send vi /etc/resolv.conf {Enter}
- Sleep, 1000
+ Sleep, 1500
  Send a
- Send nameserver 8.8.8.8
+ Send nameserver 8.8.8.8 {Enter}
+ Send nameserver 4.2.2.2 {Enter}
  Send {Esc} :wq {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Send passwd
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  Random("password","12")
  SendRaw %password%
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  SendRaw %password%
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Clipboard:= password
  Send service network restart && ping -c 5 google.com {Enter}
@@ -157,7 +210,7 @@ return
 	Return
 	
  Send mii-tool eth1 && mii-tool eth0 {Enter}
- Sleep, 1000
+ Sleep, 1500
 	
  If InputBox(device, "Network Device Name")
 	Return
@@ -167,7 +220,7 @@ return
  Sleep, 500
  
  Send vi /etc/network/interfaces {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Send a
  Send auto %device% {Enter}
@@ -180,14 +233,14 @@ return
  
  Send passwd
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  Random("password","12")
  SendRaw %password%
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  SendRaw %password%
  Send {Enter}
- Sleep, 1000
+ Sleep, 1500
  
  Clipboard:= password
 
