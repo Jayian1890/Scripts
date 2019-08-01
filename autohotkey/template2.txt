@@ -1,7 +1,0 @@
-DEVICE=%device%
-TYPE=Ethernet
-ONBOOT=yes
-BOOTPROTO=static
-IPADDR=%ipaddr%
-GATEWAY=%gateway%
-NETMASK=255.255.255.248
