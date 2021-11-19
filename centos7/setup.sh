@@ -1,15 +1,8 @@
 #!/bin/sh
 SSH_DIR=~/.ssh
 SSH_KEYS=authorized_keys
-SSH_PORT=48624
+SSH_PORT=22
 PUB_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEAykZ1FVy8AJLv52aKZnMbPE2S9tcHi37/Rc1Z6fRhr++3PR9OZvNubLRU2iGObjD15LHuSI+m7Na0ZAkQMd7F/it4WhA9tTZyW0BEZGOhSIeXp+e3JLzt9DHBcwIG0ZEYqCFIdVjxoT0BzmUmmwmu2ZG8t07WE9m3W30sFOCp3f0= rsa-key-20130113"
-
-echo "Updating system..."
-yum install epel-release -y && yum install htop -y && yum update -y
-
-echo "Adding firewalld exceptions..."
-firewall-cmd --permanent --zone=public --add-port=$SSH_PORT/tcp
-firewall-cmd --reload
 
 echo "Adding ssh key to authorized_keys..."
 if [ ! -d "$SSH_DIR" ]; then
@@ -32,3 +25,11 @@ sed -i "s/PasswordAuthentication yes/PasswordAuthentication no/g" "/etc/ssh/sshd
 
 echo "Restarting ssh..."
 service sshd restart
+
+echo "Updating system..."
+yum install epel-release -y && yum install htop -y && yum update -y
+
+echo "Adding firewalld exceptions..."
+firewall-cmd --permanent --zone=public --add-port=$SSH_PORT/tcp
+firewall-cmd --reload
+
