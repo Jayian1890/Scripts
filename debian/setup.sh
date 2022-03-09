@@ -21,4 +21,4 @@ chmod 700 $SSH_DIR
 chmod 600 "$SSH_DIR/$SSH_KEYS"
 
 echo "Restarting ssh..."
-service ssh restart
+sudo service ssh restart
