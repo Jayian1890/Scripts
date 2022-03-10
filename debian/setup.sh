@@ -19,6 +19,3 @@ echo "$PUB_KEY" >> ~/.ssh/authorized_keys
 echo "Setting permissions..."
 sudo chmod 700 $SSH_DIR
 sudo chmod 600 "$SSH_DIR/$SSH_KEYS"
-
-echo "Restarting ssh..."
-sudo service ssh restart
