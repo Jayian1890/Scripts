@@ -10,33 +10,20 @@ sudo apt-get update && sudo apt-get upgrade -y
 echo "Installing base packages..."
 sudo apt-get install curl systemd-resolved cifs-utils htop -y
 
-echo "Adding ssh key to authorized_keys..."
-if [ ! -d "$SSH_DIR" ]; then
-	mkdir ~/.ssh
-	if [ ! -f "$SSH_DIR/$SSH_KEYS" ]; then
-		touch ~/.ssh/authorized_keys
-	fi
-fi
-echo "$PUB_KEY" >> ~/.ssh/authorized_keys
-
-echo "Setting permissions..."
-sudo chmod 700 $SSH_DIR
-sudo chmod 600 "$SSH_DIR/$SSH_KEYS"
-
-echo "Linking stub-resolv config file..."
-sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-
-echo "Setting name servers..."
-sudo resolvectl dns ens192 1.1.1.1
-
-echo "Restarting systemd-resolved..."
-sudo systemctl restart systemd-resolved
-
 echo "Installing Tailscale package... (Interaction required)"
 curl -fsSL https://tailscale.com/install.sh | sh
 
 echo "Starting Tailscale service..."
 sudo tailscale up
+
+echo "Linking stub-resolv config file..."
+sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+
+#echo "Setting name servers..."
+#sudo resolvectl dns ens192 1.1.1.1
+
+#echo "Restarting systemd-resolved..."
+#sudo systemctl restart systemd-resolved
 
 echo "Setting up Samba client..."
 sudo echo 'user=jayian' | sudo tee /.smbcredentials
