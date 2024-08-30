@@ -6,12 +6,11 @@ sudo apt-get update && sudo apt-get upgrade -y
 echo "Installing base packages..."
 sudo apt-get install curl systemd-resolved cifs-utils htop -y
 
-echo "Linking stub-resolv config file..."
-sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-
 echo "Setting name servers..."
-echo $(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}') | tee -a interface
-sudo resolvectl dns $(<interface) 1.1.1.1
+sudo echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+#sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+#echo $(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}') | tee -a interface
+#sudo resolvectl dns $(<interface) 1.1.1.1
 
 echo "Restarting systemd-resolved..."
 sudo systemctl restart systemd-resolved
