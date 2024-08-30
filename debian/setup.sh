@@ -10,7 +10,9 @@ echo "Linking stub-resolv config file..."
 sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 echo "Setting name servers..."
-sudo resolvectl dns ens192 1.1.1.1 && sudo systemctl restart systemd-resolved
+echo $(ip link | awk -F: '$0 !~ "lo|vir|wl|^[^0-9]"{print $2;getline}') | tee -a interface
+IFACE=$(<interface)
+sudo resolvectl dns $IFACE 1.1.1.1 && sudo systemctl restart systemd-resolved
 
 echo "Installing Tailscale package... (Interaction required)"
 curl -fsSL https://tailscale.com/install.sh | sh
