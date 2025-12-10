@@ -21,13 +21,4 @@ curl -fsSL https://tailscale.com/install.sh | sh
 echo "Starting Tailscale service..."
 sudo tailscale up
 
-echo "Setting up Samba client..."
-sudo echo 'user=jayian' | sudo tee /.smbcredentials
-sudo echo 'password=Admins!@!301' | sudo tee -a /.smbcredentials
-sudo echo "//MediaServer/media /media cifs credentials=/.smbcredentials,iocharset=utf8,file_mode=0777,dir_mode=0777 0 0" | sudo tee -a /etc/fstab
-sudo systemctl daemon-reload 
-
-echo "Mounting samba NFS to /media"
-sudo mount -a
-
 echo "Everything has been completed!!! Hopefully without error"
