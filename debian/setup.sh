@@ -116,25 +116,6 @@ $SUDO apt-get install -y \
     openssh-server
 
 #############################################
-# Configure DNS
-#############################################
-echo "Setting DNS servers..."
-
-# Backup current resolv.conf
-if [ ! -f /etc/resolv.conf.backup ]; then
-    cp /etc/resolv.conf /etc/resolv.conf.backup
-fi
-
-# Overwrite resolv.conf with desired DNS
-cat <<EOF | $SUDO tee /etc/resolv.conf >/dev/null
-nameserver 1.1.1.1
-nameserver 8.8.8.8
-EOF
-
-echo "DNS configured."
-
-
-#############################################
 # Configure SSH Daemon
 #############################################
 echo "Configuring SSH to use port $SSH_PORT..."
