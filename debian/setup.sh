@@ -5,7 +5,7 @@ set -e
 # Prompt for new user
 #############################################
 echo "Enter a username to create:"
-read NEW_USER
+read NEW_USER < /dev/tty
 
 if ! echo "$NEW_USER" | grep -Eq '^[a-zA-Z0-9_-]+$'; then
     echo "Invalid username. Allowed: letters, numbers, underscores, hyphens."
@@ -56,7 +56,7 @@ echo "SSH key configured for $NEW_USER"
 # Hostname Prompt
 #############################################
 echo "Enter a hostname for this device (letters, numbers, hyphens only):"
-read NEW_HOSTNAME
+read NEW_HOSTNAME < /dev/tty
 
 if ! echo "$NEW_HOSTNAME" | grep -Eq '^[a-zA-Z0-9-]+$'; then
     echo "Invalid hostname. Allowed: letters, numbers, hyphens."
@@ -79,7 +79,7 @@ echo "Hostname updated."
 # SSH Port Prompt
 #############################################
 echo "Enter a new SSH port (optional). Press ENTER for default (22):"
-read SSH_PORT
+read SSH_PORT < /dev/tty
 
 if [ -z "$SSH_PORT" ]; then
     SSH_PORT=22
