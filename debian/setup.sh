@@ -108,13 +108,8 @@ $SUDO apt-get upgrade -y
 # Install Packages
 #############################################
 echo "Installing base packages..."
-$SUDO apt-get install -y \
-    curl \
-    systemd-resolved \
-    htop \
-    ufw \
-    openssh-server
-
+$SUDO apt-get install -y curl htop
+    
 #############################################
 # Configure SSH Daemon
 #############################################
@@ -128,17 +123,6 @@ fi
 
 $SUDO systemctl reload sshd
 echo "SSH daemon reloaded."
-
-#############################################
-# Configure Firewall
-#############################################
-echo "Configuring firewall..."
-$SUDO ufw --force reset
-$SUDO ufw default deny incoming
-$SUDO ufw default allow outgoing
-$SUDO ufw allow "$SSH_PORT/tcp"
-$SUDO ufw --force enable
-echo "Firewall enabled. Only port $SSH_PORT is open."
 
 #############################################
 # Install Tailscale
