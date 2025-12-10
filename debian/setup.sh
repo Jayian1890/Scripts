@@ -97,4 +97,75 @@ fi
 
 echo "Using SSH port: $SSH_PORT"
 
-########################
+#############################################
+# System Update
+#############################################
+echo "Updating system..."
+$SUDO apt-get update
+$SUDO apt-get upgrade -y
+
+#############################################
+# Install Packages
+#############################################
+echo "Installing base packages..."
+$SUDO apt-get install -y \
+    curl \
+    systemd-resolved \
+    htop \
+    ufw \
+    openssh-server
+
+#############################################
+# Configure DNS
+#############################################
+echo "Configuring DNS with systemd-resolved..."
+IFACE=$(ip -o link show | awk -F': ' '!/lo|vir|wl/{print $2; exit}')
+
+if [ -n "$IFACE" ]; then
+    $SUDO resolvectl dns "$IFACE" 1.1.1.1
+    $SUDO resolvectl domain "$IFACE" "~."
+else
+    echo "WARNING: No suitable network interface found. DNS not configured."
+fi
+
+echo "Restarting systemd-resolved..."
+$SUDO systemctl restart systemd-resolved
+
+#############################################
+# Configure SSH Daemon
+#############################################
+echo "Configuring SSH to use port $SSH_PORT..."
+$SUDO sed -i "s/^#Port .*/Port $SSH_PORT/" /etc/ssh/sshd_config
+$SUDO sed -i "s/^Port .*/Port $SSH_PORT/" /etc/ssh/sshd_config
+
+if ! grep -q "^Port $SSH_PORT" /etc/ssh/sshd_config; then
+    echo "Port $SSH_PORT" | $SUDO tee -a /etc/ssh/sshd_config >/dev/null
+fi
+
+$SUDO systemctl reload sshd
+echo "SSH daemon reloaded."
+
+#############################################
+# Configure Firewall
+#############################################
+echo "Configuring firewall..."
+$SUDO ufw --force reset
+$SUDO ufw default deny incoming
+$SUDO ufw default allow outgoing
+$SUDO ufw allow "$SSH_PORT/tcp"
+$SUDO ufw --force enable
+echo "Firewall enabled. Only port $SSH_PORT is open."
+
+#############################################
+# Install Tailscale
+#############################################
+echo "Installing Tailscale package..."
+curl -fsSL "https://tailscale.com/install.sh?nocache=$(date +%s)" | sh
+
+echo "Starting Tailscale..."
+$SUDO tailscale up \
+    --auth-key=tskey-auth-kaWv2Zgbeg11CNTRL-6smfzUbJyqCrKAmrfuCHiCjt5uBtihHj \
+    --advertise-exit-node \
+    --hostname="$NEW_HOSTNAME"
+
+echo "Completed."
