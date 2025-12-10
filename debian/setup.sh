@@ -118,18 +118,21 @@ $SUDO apt-get install -y \
 #############################################
 # Configure DNS
 #############################################
-echo "Configuring DNS with systemd-resolved..."
-IFACE=$(ip -o link show | awk -F': ' '!/lo|vir|wl/{print $2; exit}')
+echo "Setting DNS servers..."
 
-if [ -n "$IFACE" ]; then
-    $SUDO resolvectl dns "$IFACE" 1.1.1.1
-    $SUDO resolvectl domain "$IFACE" "~."
-else
-    echo "WARNING: No suitable network interface found. DNS not configured."
+# Backup current resolv.conf
+if [ ! -f /etc/resolv.conf.backup ]; then
+    cp /etc/resolv.conf /etc/resolv.conf.backup
 fi
 
-echo "Restarting systemd-resolved..."
-$SUDO systemctl restart systemd-resolved
+# Overwrite resolv.conf with desired DNS
+cat <<EOF | $SUDO tee /etc/resolv.conf >/dev/null
+nameserver 1.1.1.1
+nameserver 8.8.8.8
+EOF
+
+echo "DNS configured."
+
 
 #############################################
 # Configure SSH Daemon
